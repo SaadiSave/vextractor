@@ -9,3 +9,4 @@ mod tests {
 } */
 
 mod vex;
+pub use vex::Vextract;
