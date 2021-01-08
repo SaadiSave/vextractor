@@ -1,0 +1,13 @@
+[package]
+name = "vextractor"
+version = "0.1.0"
+authors = ["Saadi Save"]
+edition = "2018"
+repository = "https://github.com/SaadiSave/vextractor"
+license-file = "LICENSE"
+readme = "README.md"
+homepage = "https://github.com/SaadiSave/vextractor"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
