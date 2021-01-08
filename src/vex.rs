@@ -53,7 +53,7 @@ impl Vextract {
             let mut j = i.clone();
 
             while cpunc {
-                let mut x = (j.chars().count() - 1) as i64;
+                let mut x = (j.chars().count() as i64) - 1;
                 if x < 0 {
                     x = 0;
                 }
