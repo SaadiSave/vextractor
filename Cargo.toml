@@ -1,6 +1,6 @@
 [package]
 name = "vextractor"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Saadi Save"]
 edition = "2018"
 repository = "https://github.com/SaadiSave/vextractor"
