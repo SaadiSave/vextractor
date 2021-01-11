@@ -94,7 +94,7 @@ impl Vextract {
     /// 
     /// While this method is called by default in the initialiser, it can be
     /// used to remove punctuation added post-initialisation by the
-    /// [`add_punctuation`] method.
+    /// [`Vextract::add_punctuation`] method.
     pub fn pstrip(&mut self) {
         let mut tmp: HashSet<String> = HashSet::new();
         let mut tmpv: Vec<String> = Vec::new();
