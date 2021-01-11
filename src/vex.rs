@@ -1,3 +1,19 @@
+// Vextractor: A simple rust library for vocabulary processing
+// Copyright (C) 2020 Saadi Save
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #![allow(dead_code)]
 
 use fs::read_to_string;
@@ -8,17 +24,39 @@ fn contains_str(vec: &Vec<String>, s: &String) -> bool {
     vec.iter().any(|x| x == s)
 }
 
+fn char_index(s: &String, c: char) -> usize {
+    s.chars().position(|ch | ch == c).unwrap()
+}
+
+/// Struct that holds all the variables required for deriving the vocabulary
+/// of a text file.
 #[derive(Clone)]
 pub struct Vextract {
     punc: String,
     plist: Vec<String>,
     alist: Vec<String>,
     voc: HashSet<String>,
+    
+    /// Holds the orignal content of the text file
     pub text: String,
+
+    /// Contains the vocabulary in the form of a vector containing the words
     pub vocab: Vec<String>,
 }
 
 impl Vextract {
+
+    /// Initialise a new [`Vextract`] struct.
+    /// 
+    /// # Quick Example
+    /// 
+    /// ```no_run
+    /// let x = Vextract::new(
+    /// "somepath/somefile.txt", // inputfile
+    /// vec!["EU", "etc.", "i.e.", "e.g."], // Acronyms
+    /// vec!["Germany", "France", "Belgium", "Italy"] // Proper Nouns
+    /// );
+    /// ```
     pub fn new(fileurl: &str, al: Vec<&str>, pl: Vec<&str>) -> Vextract {
         let mut vset: HashSet<String> = HashSet::new();
         let ftext = read_to_string(fileurl).expect("unable to read file");
@@ -44,6 +82,19 @@ impl Vextract {
         tmp
     }
 
+    /// Strip puctuation from the words that aren't completely processed yet.
+    /// 
+    /// # Quick Example
+    /// 
+    /// ```no_run
+    /// x.pstrip(); // Where x is a Vextract struct
+    /// ```
+    /// 
+    /// # Notes
+    /// 
+    /// While this method is called by default in the initialiser, it can be
+    /// used to remove punctuation added post-initialisation by the
+    /// [`add_punctuation`] method.
     pub fn pstrip(&mut self) {
         let mut tmp: HashSet<String> = HashSet::new();
         let mut tmpv: Vec<String> = Vec::new();
