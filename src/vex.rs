@@ -25,7 +25,7 @@ fn contains_str(vec: &Vec<String>, s: &String) -> bool {
 }
 
 fn char_index(s: &String, c: char) -> usize {
-    s.chars().position(|ch | ch == c).unwrap()
+    s.chars().position(|ch| ch == c).unwrap()
 }
 
 /// Struct that holds all the variables required for deriving the vocabulary
@@ -36,20 +36,18 @@ pub struct Vextract {
     plist: Vec<String>,
     alist: Vec<String>,
     voc: HashSet<String>,
-    
-    /// Holds the orignal content of the text file
-    pub text: String,
+    vocab: Vec<String>,
 
-    /// Contains the vocabulary in the form of a vector containing the words
-    pub vocab: Vec<String>,
+    /// Holds the orignal content of the text file as a [`String`] for direct 
+    /// access
+    pub text: String,
 }
 
 impl Vextract {
-
     /// Initialise a new [`Vextract`] struct.
-    /// 
+    ///
     /// # Quick Example
-    /// 
+    ///
     /// ```no_run
     /// let x = Vextract::new(
     /// "somepath/somefile.txt", // inputfile
@@ -83,15 +81,15 @@ impl Vextract {
     }
 
     /// Strip puctuation from the words that aren't completely processed yet.
-    /// 
+    ///
     /// # Quick Example
-    /// 
+    ///
     /// ```no_run
     /// x.pstrip(); // Where x is a Vextract struct
     /// ```
-    /// 
+    ///
     /// # Notes
-    /// 
+    ///
     /// While this method is called by default in the initialiser, it can be
     /// used to remove punctuation added post-initialisation by the
     /// [`Vextract::add_punctuation`] method.

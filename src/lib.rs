@@ -41,10 +41,10 @@
 //!
 //! x.write_to_file("somepath/somefile.txt"); // Writes vocab to a text file
 //! ```
-//! 
+//!
 //! ## Licence
-//! 
-//! `vextractor` is licensed under GNU AGPL-3.0. Please read the `LICENSE` 
-//! file for more information.
+//!
+//! `vextractor` is licensed under GNU AFFERO GENERAL PUBLIC LICENSE version 3
+//! . Please read the `LICENSE.md` file for more information.
 
 pub mod vex;
