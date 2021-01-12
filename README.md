@@ -7,7 +7,7 @@
 extern crate vextractor;
 use vextractor::vex::Vextract;
 let x = Vextract::new(
-    "somepath/somefile.txt", // inputfile
+    "somepath/somefile.txt", // file containing the text to be processed
     vec!["EU", "etc.", "i.e.", "e.g."], // Acronyms
     vec!["Germany", "France", "Belgium", "Italy"] // Proper Nouns
 );
