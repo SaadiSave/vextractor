@@ -95,7 +95,6 @@ impl Vextract {
     /// [`Vextract::add_punctuation`] method.
     pub fn pstrip(&mut self) {
         let mut tmp: HashSet<String> = HashSet::new();
-        let mut tmpv: Vec<String> = Vec::new();
 
         for i in self.voc.iter() {
             let mut cpunc = true;
@@ -110,8 +109,7 @@ impl Vextract {
                 let y = x as usize;
 
                 if contains_str(&self.alist, i) {
-                    tmp.insert((*i.clone()).to_string());
-                    tmpv.push((*i.clone()).to_string())
+                    tmp.insert((*i).to_string());
                 } else {
                     if self.punc.contains(j.chars().nth(y).unwrap_or('0')) {
                         j.pop();
@@ -127,57 +125,51 @@ impl Vextract {
                 cpunc = false;
             }
 
-            tmp.insert(j.clone());
-            tmpv.push(j);
+            tmp.insert(j);
         }
 
         self.voc.clear();
-        self.voc.extend(tmp);
+        self.voc.extend(tmp.clone());
         self.vocab.clear();
-        self.vocab.extend(tmpv);
+        self.vocab.extend(tmp);
     }
 
     fn make_lower(&mut self) {
         let mut tmp: HashSet<String> = HashSet::new();
-        let mut tmpv: Vec<String> = Vec::new();
 
         for i in self.voc.iter() {
             let j = i.clone();
 
             if contains_str(&self.plist, &j) || contains_str(&self.alist, &j) {
-                tmp.insert(j.clone());
-                tmpv.push(j);
+                tmp.insert(j);
             } else {
-                tmp.insert(j.clone().to_lowercase());
-                tmpv.push(j.to_lowercase());
+                tmp.insert(j.to_lowercase());
             }
         }
 
         self.voc.clear();
-        self.voc.extend(tmp);
+        self.voc.extend(tmp.clone());
         self.vocab.clear();
-        self.vocab.extend(tmpv);
+        self.vocab.extend(tmp);
     }
 
     fn remove_nums(&mut self) {
         let mut tmp: HashSet<String> = HashSet::new();
-        let mut tmpv: Vec<String> = Vec::new();
 
         for i in self.voc.iter() {
             let j = i.clone();
             match j.parse::<f64>() {
                 Ok(_s) => (),
                 Err(_s) => {
-                    tmp.insert(j.clone());
-                    tmpv.push(j);
+                    tmp.insert(j);
                 }
             }
         }
 
         self.voc.clear();
-        self.voc.extend(tmp);
+        self.voc.extend(tmp.clone());
         self.vocab.clear();
-        self.vocab.extend(tmpv);
+        self.vocab.extend(tmp);
     }
 
     /// Adds punctuation to the punctuation string in the default struct.
