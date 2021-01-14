@@ -1,4 +1,7 @@
 # vextractor
+[![Crates.io](https://img.shields.io/crates/v/vextractor?style=for-the-badge)](https://crates.io/crates/vextractor)
+[![Crates.io](https://img.shields.io/crates/l/vextractor?style=for-the-badge)](https://github.com/SaadiSave/vextractor/blob/main/LICENSE.md)\
+\
 `vextractor` is a simple library for extracting the vocabulary of a text file.
 ## About
 `vextractor` works for any language in any script supported by unicode, as long as the language separates words with a unicode space `' '` `(U+20)`.
