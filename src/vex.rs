@@ -65,13 +65,15 @@ impl Vextract {
             }
         }
 
+        let l =  vset.len();
+
         let mut tmp = Vextract {
             punc: "!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~“”„‚‘’（）".to_string(),
             plist: pl.iter().map(|s| s.clone().to_string()).collect(),
             alist: al.iter().map(|s| s.clone().to_string()).collect(),
             voc: vset,
             text: ftext,
-            vocab: Vec::new(),
+            vocab: Vec::with_capacity(l + 1),
         };
         tmp.pstrip();
         tmp.make_lower();
