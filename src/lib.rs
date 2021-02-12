@@ -36,8 +36,7 @@
 //!     vec!["Germany", "France", "Belgium", "Italy"] // Proper Nouns
 //! );
 //!
-//! println!("{}", x.get_pretty_vocab()); // Prints the vocabulary
-//! println!("{}", x.get_sorted_pretty_vocab()); // Sorts, then prints
+//! println!("{}", x.get_pretty_vocab()); // Prints the sorted vocabulary
 //!
 //! x.write_to_file("somepath/somefile.txt"); // Writes vocab to a text file
 //! ```

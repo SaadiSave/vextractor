@@ -17,7 +17,7 @@
 #![allow(dead_code)]
 
 use fs::read_to_string;
-use std::collections::HashSet;
+use std::collections::BTreeSet;
 use std::fs;
 
 fn contains_str(vec: &Vec<String>, s: &String) -> bool {
@@ -35,10 +35,9 @@ pub struct Vextract {
     punc: String,
     plist: Vec<String>,
     alist: Vec<String>,
-    voc: HashSet<String>,
-    vocab: Vec<String>,
+    voc: BTreeSet<String>,
 
-    /// Holds the orignal content of the text file as a [`String`] for direct 
+    /// Holds the orignal content of the text file as a [`String`] for direct
     /// access
     pub text: String,
 }
@@ -56,7 +55,7 @@ impl Vextract {
     /// );
     /// ```
     pub fn new(filepath: &str, al: Vec<&str>, pl: Vec<&str>) -> Vextract {
-        let mut vset: HashSet<String> = HashSet::new();
+        let mut vset: BTreeSet<String> = BTreeSet::new();
         let ftext = read_to_string(filepath).expect("unable to read file");
 
         for i in ftext.split('\n') {
@@ -65,15 +64,12 @@ impl Vextract {
             }
         }
 
-        let l =  vset.len();
-
         let mut tmp = Vextract {
             punc: "!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~“”„‚‘’（）".to_string(),
             plist: pl.iter().map(|s| s.clone().to_string()).collect(),
             alist: al.iter().map(|s| s.clone().to_string()).collect(),
             voc: vset,
             text: ftext,
-            vocab: Vec::with_capacity(l + 1),
         };
         tmp.pstrip();
         tmp.make_lower();
@@ -96,7 +92,7 @@ impl Vextract {
     /// used to remove punctuation added post-initialisation by the
     /// [`Vextract::add_punctuation`] method.
     pub fn pstrip(&mut self) {
-        let mut tmp: HashSet<String> = HashSet::new();
+        let mut tmp: BTreeSet<String> = BTreeSet::new();
 
         for i in self.voc.iter() {
             let mut cpunc = true;
@@ -131,13 +127,11 @@ impl Vextract {
         }
 
         self.voc.clear();
-        self.voc.extend(tmp.clone());
-        self.vocab.clear();
-        self.vocab.extend(tmp);
+        self.voc.extend(tmp);
     }
 
     fn make_lower(&mut self) {
-        let mut tmp: HashSet<String> = HashSet::new();
+        let mut tmp: BTreeSet<String> = BTreeSet::new();
 
         for i in self.voc.iter() {
             let j = i.clone();
@@ -150,13 +144,11 @@ impl Vextract {
         }
 
         self.voc.clear();
-        self.voc.extend(tmp.clone());
-        self.vocab.clear();
-        self.vocab.extend(tmp);
+        self.voc.extend(tmp);
     }
 
     fn remove_nums(&mut self) {
-        let mut tmp: HashSet<String> = HashSet::new();
+        let mut tmp: BTreeSet<String> = BTreeSet::new();
 
         for i in self.voc.iter() {
             let j = i.clone();
@@ -169,13 +161,11 @@ impl Vextract {
         }
 
         self.voc.clear();
-        self.voc.extend(tmp.clone());
-        self.vocab.clear();
-        self.vocab.extend(tmp);
+        self.voc.extend(tmp);
     }
 
     /// Adds punctuation to the punctuation string in the default struct.
-    /// 
+    ///
     /// ## Quick Example
     /// You might want to remove the ideographic full-stop (period) used
     /// in CJK languages `。` `(U+3002)`. Do:
@@ -183,9 +173,9 @@ impl Vextract {
     /// x.add_punctuation("。"); // x is a Vextract struct
     /// x.pstrip(); // removes the newly added punctuation character
     /// ```
-    /// 
+    ///
     /// ## Notes
-    /// 
+    ///
     /// Ensure that the character is enclosed by `""` when using the function.
     /// This is because the function uses `&str` as the data type. This may
     /// be used to add multiple punctuation characters at once:
@@ -202,38 +192,24 @@ impl Vextract {
         self.punc += s;
     }
 
-    /// Returns the vocabulary as a [`Vec<String>`] containing each word as an 
+    /// Returns the vocabulary as a [`Vec<String>`] containing each word as an
     /// element.
+    /// Sorted by default
     pub fn get_vocab(&self) -> Vec<String> {
-        self.vocab.clone()
+        let mut out = Vec::new();
+
+        for i in self.voc.iter() {
+            out.push(i.clone());
+        }
+
+        out
     }
 
     /// Returns the vocabulary as a [`String`] with each word on a new line.
+    /// Sorted by default
     pub fn get_pretty_vocab(&self) -> String {
         let mut x = String::new();
-        for y in self.vocab.clone() {
-            x += format!("{}\n", y).as_str();
-        }
-
-        x
-    }
-
-    /// Returns the vocabulary as a [`Vec<String>`] containing each word as an 
-    /// element, and sorted in ascending order.
-    pub fn get_sorted_vocab(&self) -> Vec<String> {
-        let mut x = self.vocab.clone();
-        x.sort();
-        x
-    }
-
-    /// Returns the vocabulary as a [`String`] with each word on a new line,
-    /// and sorted in ascending order.
-    pub fn get_sorted_pretty_vocab(&self) -> String {
-        let mut x = String::new();
-        let mut y = self.vocab.clone();
-        y.sort();
-
-        for y in y {
+        for y in self.voc.iter() {
             x += format!("{}\n", y).as_str();
         }
 
@@ -242,11 +218,11 @@ impl Vextract {
 
     /// Returns the number of words in the vocabulary.
     pub fn get_len(&self) -> u32 {
-        self.vocab.len() as u32
+        self.voc.len() as u32
     }
 
-    /// Writes the output of [`Vextract::get_sorted_pretty_vocab`] to a file.
+    /// Writes the output of [`Vextract::get_pretty_vocab`] to a file.
     pub fn write_to_file(&self, filepath: &str) {
-        fs::write(filepath, self.get_sorted_pretty_vocab()).expect("Err");
+        fs::write(filepath, self.get_pretty_vocab()).expect("Err");
     }
 }
