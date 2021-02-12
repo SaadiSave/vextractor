@@ -94,7 +94,7 @@ impl Vextract {
     pub fn pstrip(&mut self) {
         let mut tmp: BTreeSet<String> = BTreeSet::new();
 
-        for i in self.voc.iter() {
+        for i in &self.voc {
             let mut cpunc = true;
             let mut j = i.clone();
 
@@ -133,7 +133,7 @@ impl Vextract {
     fn make_lower(&mut self) {
         let mut tmp: BTreeSet<String> = BTreeSet::new();
 
-        for i in self.voc.iter() {
+        for i in &self.voc {
             let j = i.clone();
 
             if contains_str(&self.plist, &j) || contains_str(&self.alist, &j) {
@@ -150,7 +150,7 @@ impl Vextract {
     fn remove_nums(&mut self) {
         let mut tmp: BTreeSet<String> = BTreeSet::new();
 
-        for i in self.voc.iter() {
+        for i in &self.voc {
             let j = i.clone();
             match j.parse::<f64>() {
                 Ok(_s) => (),
@@ -198,7 +198,7 @@ impl Vextract {
     pub fn get_vocab(&self) -> Vec<String> {
         let mut out = Vec::new();
 
-        for i in self.voc.iter() {
+        for i in &self.voc {
             out.push(i.clone());
         }
 
@@ -209,7 +209,7 @@ impl Vextract {
     /// Sorted by default
     pub fn get_pretty_vocab(&self) -> String {
         let mut x = String::new();
-        for y in self.voc.iter() {
+        for y in &self.voc {
             x += format!("{}\n", y).as_str();
         }
 
